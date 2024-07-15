@@ -12,6 +12,10 @@
 		E85DEF142C44F01E00B0EF5B /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E85DEF132C44F01E00B0EF5B /* CoreVideo.framework */; };
 		E85DEF162C44F02600B0EF5B /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E85DEF152C44F02600B0EF5B /* IOKit.framework */; };
 		E85DEF182C44F02C00B0EF5B /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E85DEF172C44F02C00B0EF5B /* OpenGL.framework */; };
+		E85DEF1B2C44F3D400B0EF5B /* ShaderCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E85DEF192C44F3D400B0EF5B /* ShaderCommand.cpp */; };
+		E85DEF222C44F46500B0EF5B /* SliceRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E85DEF202C44F46500B0EF5B /* SliceRenderer.cpp */; };
+		E85DEF252C44F48300B0EF5B /* Simulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E85DEF232C44F48300B0EF5B /* Simulator.cpp */; };
+		E85DEF352C44F6F600B0EF5B /* ComputeCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E85DEF332C44F6F600B0EF5B /* ComputeCommand.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -33,6 +37,25 @@
 		E85DEF132C44F01E00B0EF5B /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		E85DEF152C44F02600B0EF5B /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		E85DEF172C44F02C00B0EF5B /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		E85DEF192C44F3D400B0EF5B /* ShaderCommand.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderCommand.cpp; sourceTree = "<group>"; };
+		E85DEF1A2C44F3D400B0EF5B /* ShaderCommand.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ShaderCommand.hpp; sourceTree = "<group>"; };
+		E85DEF202C44F46500B0EF5B /* SliceRenderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SliceRenderer.cpp; sourceTree = "<group>"; };
+		E85DEF212C44F46500B0EF5B /* SliceRenderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SliceRenderer.hpp; sourceTree = "<group>"; };
+		E85DEF232C44F48300B0EF5B /* Simulator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Simulator.cpp; sourceTree = "<group>"; };
+		E85DEF242C44F48300B0EF5B /* Simulator.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Simulator.hpp; sourceTree = "<group>"; };
+		E85DEF262C44F49F00B0EF5B /* Window.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
+		E85DEF272C44F4B100B0EF5B /* Matrix4x4.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Matrix4x4.h; sourceTree = "<group>"; };
+		E85DEF282C44F4C800B0EF5B /* Object.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Object.h; sourceTree = "<group>"; };
+		E85DEF2A2C44F5D600B0EF5B /* SolidShape.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SolidShape.h; sourceTree = "<group>"; };
+		E85DEF2B2C44F5E700B0EF5B /* SolidShapeIndex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SolidShapeIndex.h; sourceTree = "<group>"; };
+		E85DEF2C2C44F5F600B0EF5B /* ShapeIndex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShapeIndex.h; sourceTree = "<group>"; };
+		E85DEF2D2C44F60500B0EF5B /* Shape.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Shape.h; sourceTree = "<group>"; };
+		E85DEF2E2C44F62700B0EF5B /* point.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = point.frag; sourceTree = "<group>"; };
+		E85DEF302C44F64600B0EF5B /* point.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = point.vert; sourceTree = "<group>"; };
+		E85DEF312C44F65800B0EF5B /* volume.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = volume.vert; sourceTree = "<group>"; };
+		E85DEF322C44F66300B0EF5B /* volume.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = volume.frag; sourceTree = "<group>"; };
+		E85DEF332C44F6F600B0EF5B /* ComputeCommand.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ComputeCommand.cpp; sourceTree = "<group>"; };
+		E85DEF342C44F6F600B0EF5B /* ComputeCommand.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ComputeCommand.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +94,15 @@
 			isa = PBXGroup;
 			children = (
 				E85DEF092C44EF8900B0EF5B /* main.cpp */,
+				E85DEF202C44F46500B0EF5B /* SliceRenderer.cpp */,
+				E85DEF232C44F48300B0EF5B /* Simulator.cpp */,
+				E85DEF242C44F48300B0EF5B /* Simulator.hpp */,
+				E85DEF262C44F49F00B0EF5B /* Window.h */,
+				E85DEF272C44F4B100B0EF5B /* Matrix4x4.h */,
+				E85DEF212C44F46500B0EF5B /* SliceRenderer.hpp */,
+				E85DEF2F2C44F63600B0EF5B /* Shader */,
+				E85DEF292C44F5AD00B0EF5B /* Shape */,
+				E85DEF1C2C44F3F100B0EF5B /* Command */,
 			);
 			path = VolumeRendering;
 			sourceTree = "<group>";
@@ -84,6 +116,40 @@
 				E85DEF112C44F01800B0EF5B /* Cocoa.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E85DEF1C2C44F3F100B0EF5B /* Command */ = {
+			isa = PBXGroup;
+			children = (
+				E85DEF192C44F3D400B0EF5B /* ShaderCommand.cpp */,
+				E85DEF332C44F6F600B0EF5B /* ComputeCommand.cpp */,
+				E85DEF342C44F6F600B0EF5B /* ComputeCommand.hpp */,
+				E85DEF1A2C44F3D400B0EF5B /* ShaderCommand.hpp */,
+			);
+			path = Command;
+			sourceTree = "<group>";
+		};
+		E85DEF292C44F5AD00B0EF5B /* Shape */ = {
+			isa = PBXGroup;
+			children = (
+				E85DEF282C44F4C800B0EF5B /* Object.h */,
+				E85DEF2A2C44F5D600B0EF5B /* SolidShape.h */,
+				E85DEF2B2C44F5E700B0EF5B /* SolidShapeIndex.h */,
+				E85DEF2C2C44F5F600B0EF5B /* ShapeIndex.h */,
+				E85DEF2D2C44F60500B0EF5B /* Shape.h */,
+			);
+			path = Shape;
+			sourceTree = "<group>";
+		};
+		E85DEF2F2C44F63600B0EF5B /* Shader */ = {
+			isa = PBXGroup;
+			children = (
+				E85DEF2E2C44F62700B0EF5B /* point.frag */,
+				E85DEF302C44F64600B0EF5B /* point.vert */,
+				E85DEF322C44F66300B0EF5B /* volume.frag */,
+				E85DEF312C44F65800B0EF5B /* volume.vert */,
+			);
+			path = Shader;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -143,6 +209,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E85DEF1B2C44F3D400B0EF5B /* ShaderCommand.cpp in Sources */,
+				E85DEF222C44F46500B0EF5B /* SliceRenderer.cpp in Sources */,
+				E85DEF352C44F6F600B0EF5B /* ComputeCommand.cpp in Sources */,
+				E85DEF252C44F48300B0EF5B /* Simulator.cpp in Sources */,
 				E85DEF0A2C44EF8900B0EF5B /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
