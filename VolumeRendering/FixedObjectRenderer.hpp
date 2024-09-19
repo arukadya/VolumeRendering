@@ -12,7 +12,6 @@
 #define TEXHEIGHT 64
 #define TEXDEPTH 64
 #define SLICENUM 64
-#define THRESHOLD 0.04
 
 #include "Eigen/Core"
 #include <iostream>

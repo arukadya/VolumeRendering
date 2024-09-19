@@ -5,7 +5,6 @@
 #define TEXHEIGHT 64
 #define TEXDEPTH 64
 #define SLICENUM 64
-#define THRESHOLD 0.04
 
 #include "Eigen/Core"
 #include <iostream>
@@ -20,7 +19,6 @@ struct SliceRenderer{
     static constexpr float sliceThickness = 2.0 / SLICENUM;
     float raySliceAngleCos;//射法投影だと画素ごとに違うはず
     int sliceDirectionID;
-    float threshold;
     
     GLfloat smokeColor;
     Eigen::Vector3f viewPoint;
@@ -32,7 +30,6 @@ struct SliceRenderer{
     void setSliceDirection(Eigen::Vector3f &tgt);
     void setSmokecolor(GLfloat color);
     float getRaySliceAngleCos(Eigen::Vector3f &tgt);
-    float getThreshold();
     GLuint makeVolume(float* rhoTexture, GLfloat *smokeColor, Eigen::Vector3f &tgt);
     GLuint makeSlice();
     void rendering(Matrix4x4 &projection,Matrix4x4 &modelview,Matrix4x4 &sliceRot,float* rhoTexture);

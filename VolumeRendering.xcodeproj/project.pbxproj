@@ -349,6 +349,7 @@
 				ENABLE_HARDENED_RUNTIME = NO;
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../../lib/eigen3.4.0\"",
+					/opt/homebrew/opt/opencv/include/opencv4,
 					/opt/homebrew/include,
 				);
 				LIBRARY_SEARCH_PATHS = /opt/homebrew/lib;
@@ -368,6 +369,7 @@
 				ENABLE_HARDENED_RUNTIME = NO;
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../../lib/eigen3.4.0\"",
+					/opt/homebrew/opt/opencv/include/opencv4,
 					/opt/homebrew/include,
 				);
 				LIBRARY_SEARCH_PATHS = /opt/homebrew/lib;

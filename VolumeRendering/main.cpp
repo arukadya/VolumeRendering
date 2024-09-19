@@ -15,6 +15,9 @@
 #include "FixedObjectRenderer.hpp"
 #include "SliceRenderer.hpp"
 #include "Eigen/Dense"
+
+#include  <opencv2/opencv.hpp>
+
 int main(int argc, char * argv[])
 {
     Simulator simulator;

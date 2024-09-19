@@ -87,7 +87,6 @@ void getBackmostSlice(Eigen::Matrix3f &ldVertices,
 
 SliceRenderer::SliceRenderer()
 {
-    threshold = THRESHOLD;
 }
 GLuint SliceRenderer::makeSlice()
 {
@@ -124,7 +123,6 @@ GLuint SliceRenderer::makeVolume(float* rhoTexture, GLfloat *smokeColor,Eigen::V
                 float opacity = 1 - transparency;
                 float opacity10 = 1 - transparency10;
                 float opacity255 = 1 - transparency255;
-//                if(opacity < threshold)volume.push_back(0.0);
 //                else volume.push_back(opacity);
                 volume.push_back(opacity);
 //                std::cout << (float)volume[volume.size()-1] << "," << opacity10 << "," << opacity255 << std::endl;
@@ -213,21 +211,15 @@ GLuint makeSlice()
     
     return vao;
 }
-float SliceRenderer::getThreshold()
-{
-    return threshold;
-}
 void SliceRenderer::rendering(Matrix4x4 &projection,Matrix4x4 &modelview,Matrix4x4 &sliceRot,float* rhoTexture)
 {
     const GLuint volumeProgram(loadVertFragProgram("Shader/volume.vert", "Shader/volume.frag"));
-    const GLint mtLoc(glGetUniformLocation(volumeProgram, "mt"));
     const GLint mwLoc(glGetUniformLocation(volumeProgram, "mw"));
     const GLint mpLoc(glGetUniformLocation(volumeProgram, "mp"));
     const GLint spacingLoc(glGetUniformLocation(volumeProgram, "spacing"));
     const GLint volume_light_vecLoc(glGetUniformLocation(volumeProgram, "light_vec"));
     const GLint sliceRot_Loc(glGetUniformLocation(volumeProgram, "sliceRot"));
     const GLint volumeLoc(glGetUniformLocation(volumeProgram, "volume"));
-    const GLint thresholdLoc(glGetUniformLocation(volumeProgram, "threshold"));
 
     glUseProgram(volumeProgram);
     glUniform1f(spacingLoc, 1.0f / static_cast<GLfloat>(SLICENUM - 1));
@@ -262,7 +254,6 @@ void SliceRenderer::makeCosTexture()
     const GLuint program(loadComputeProgram("Shader/cos.comp"));
     const GLint eye_posLoc(glGetUniformLocation(program, "eye_pos"));
     const GLint volumeLoc(glGetUniformLocation(program, "volume"));
-    const GLint thresholdLoc(glGetUniformLocation(program, "threshold"));
 
     glUseProgram(program);
     glUniform4f(eye_posLoc, 3.0f, 4.0f, 5.0f, 0.0f);
