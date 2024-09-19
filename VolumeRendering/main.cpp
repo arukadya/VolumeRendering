@@ -9,12 +9,12 @@
 #include "Shape.h"
 #include "Window.h"
 #include "Matrix4x4.h"
-//#include "ShapeIndex.h"
 #include "SolidShapeIndex.h"
 #include "SolidShape.h"
-//#include "Mesh.hpp"
 #include "Simulator.hpp"
 #include "SliceRenderer.hpp"
+#include "Eigen/Dense"
+
 // 六面体の頂点の位置
 constexpr Object::Vertex cubeVertex[] =
 {
@@ -128,20 +128,6 @@ int main(int argc, char * argv[])
     //背景色を指定する
     glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
     
-//    glEnable(GL_TEXTURE_3D);
-//    glEnable(GL_BLEND);
-//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    //背景カリングを有効にする
-//    glFrontFace(GL_CCW);
-//    glCullFace(GL_BACK);
-//    glEnable(GL_CULL_FACE);
-//    glEnable(GL_ALPHA_TEST);
-    
-    //デプスバッファを有効にする
-//    glClearDepth(1.0);
-//    glDepthFunc(GL_LESS);
-//    glEnable(GL_DEPTH_TEST);
-    
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
     
@@ -149,21 +135,12 @@ int main(int argc, char * argv[])
     //ビューボートを設定する
     glViewport(100, 50, 300, 300);
     // プログラムオブジェクトを作成する
-    const GLuint surfaceProgram(loadProgram("Shader/point.vert", "Shader/point.frag"));
-    const GLuint volumeProgram(loadProgram("Shader/volume.vert", "Shader/volume.frag"));
-//    const GLuint meshCompute(loadComputeProgram("mesh.comp"));
+    const GLuint surfaceProgram(loadVertFragProgram("Shader/point.vert", "Shader/point.frag"));
+    const GLuint volumeProgram(loadVertFragProgram("Shader/volume.vert", "Shader/volume.frag"));
     //uniform変数の場所を取得する
     const GLint surface_modelviewLoc(glGetUniformLocation(surfaceProgram, "modelview"));
     const GLint surface_projectionLoc(glGetUniformLocation(surfaceProgram, "projection"));
     const GLint surface_light_vecLoc(glGetUniformLocation(surfaceProgram, "light_vec"));
-    
-    const GLint mtLoc(glGetUniformLocation(volumeProgram, "mt"));
-    const GLint mwLoc(glGetUniformLocation(volumeProgram, "mw"));
-    const GLint mpLoc(glGetUniformLocation(volumeProgram, "mp"));
-    const GLint spacingLoc(glGetUniformLocation(volumeProgram, "spacing"));
-    const GLint volume_light_vecLoc(glGetUniformLocation(volumeProgram, "light_vec"));
-    const GLint volumeLoc(glGetUniformLocation(volumeProgram, "volume"));
-    const GLint thresholdLoc(glGetUniformLocation(volumeProgram, "threshold"));
     //図形データを作成する
 //   std::unique_ptr<const Shape>shape(new SolidShapeIndex(3,static_cast<GLuint>(bunny.Vertices.size()) ,bunny.outputVertexData(),3 * static_cast<GLuint>(bunny.Faces.size()),bunny.outputFaceData()));
     
@@ -174,13 +151,22 @@ int main(int argc, char * argv[])
     //タイマーを0にセット
     glfwSetTime(0.0);
     //テキストデータのID
-    int id = 50;
+    int id = 0;
+//    int id = 0;
+    int sumcnt = 0;
+    float startTime;
+    float sum = 0;
     while(window)
     {
+        
         std::string inputFileName = "resources/density_txt/output";
-        inputFileName += std::to_string(id % 100)+".txt";
+        inputFileName += std::to_string(id % 500)+".txt";
         ++id;
         simulator.inputTXT(inputFileName);
+        
+        Eigen::Vector3f viewPoint(4.0f, 4.0f, 4.0f);
+//        viewPoint /= 1.732;
+        
         //ウィンドウを消去する
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         //デプスバッファを有効にする
@@ -199,7 +185,7 @@ int main(int argc, char * argv[])
         const GLfloat *const size(window.getSize());
         const GLfloat fovy(window.getScale() * 0.01f);
         const GLfloat aspect(size[0] / size[1]);
-        const Matrix4x4 projection(Matrix4x4::perspective(fovy, aspect, 1.0f, 10.0f));
+        Matrix4x4 projection(Matrix4x4::perspective(fovy, aspect, 1.0f, 10.0f));
         
         // 平行移動の変換行列を求める
         const GLfloat *const position(window.getLocation());
@@ -208,63 +194,45 @@ int main(int argc, char * argv[])
         const GLfloat *const location(window.getLocation());
 //        const Matrix4x4 r(Matrix4x4::rotate(static_cast<GLfloat>(glfwGetTime()), 0.0f, 1.0f, 0.0f));
         Matrix4x4 r(Matrix4x4::rotate(0.0f, 0.0f, 1.0f, 0.0f));
-//        Matrix4x4 tr(Matrix4x4::textureRotate(0.0f, 0.0f, 1.0f, 0.0f));
+        
         const Matrix4x4 model(Matrix4x4::translate(location[0], location[1], 0.0f) * r);
         
         Matrix4x4 trans(Matrix4x4::translate(-0.5f, -0.5f, -0.5f));
         //ビュー変換行列を求める
-        const Matrix4x4 view(Matrix4x4::lookat(3.0f, 4.0f, 5.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f));
+        const Matrix4x4 view(Matrix4x4::lookat(viewPoint.x(), viewPoint.y(), viewPoint.z(), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f));
         //モデルビュー変換行列を求める
-        const Matrix4x4 modelview(view * model);
+        Matrix4x4 modelview(view * model);
         
         //レンダラーの設定
         Eigen::Vector3f tgt = {0.0f,0.0f,0.0f};
-        sliceRenderer.setViewPoint(3.0f, 4.0f, 5.0f);
-        GLfloat smokeColor[3] = {0.0f,0.0f,1.0f};
+        Eigen::Vector3f sliceNormal(0.0f, 0.0f, 1.0f);
+        Eigen::Vector3f cross = sliceNormal.cross(viewPoint - tgt);
+        double dot = sliceNormal.dot(viewPoint - tgt);
+        float sintheta = cross.norm()/((viewPoint - tgt).norm()*sliceNormal.norm());
+        float costheta = dot / ((viewPoint - tgt).norm()*sliceNormal.norm());
+        sliceRenderer.setViewPoint(viewPoint.x(), viewPoint.y(), viewPoint.z());
+        Matrix4x4 sliceRot(
+//                           Matrix4x4::rotate(asin(sintheta)
+                           Matrix4x4::rotate(acos(costheta)
+//                           Matrix4x4::rotate(0.7
+                                             ,cross.normalized().x()
+                                             ,cross.normalized().y()
+                                             ,cross.normalized().z()
+                                             )
+                           );
         sliceRenderer.setSliceDirection(tgt);
         // uniform 変数に値を設定する
         glUniformMatrix4fv(surface_projectionLoc, 1, GL_FALSE, projection.data());
         glUniformMatrix4fv(surface_modelviewLoc, 1, GL_FALSE, modelview.data());
-        glUniform4f(surface_light_vecLoc, 3.0f, 4.0f, 5.0f, 0.0f);
+        glUniform4f(surface_light_vecLoc, viewPoint.x(), viewPoint.y(), viewPoint.z(), 0.0f);
         
         //図形を描画する
 //        shape->draw();
         shape_wire->draw();
-
-        
         //ボリュームレンダリング
-        //ボリュームレンダリングの設定
-        //デプステスト無効
-//        glDisable(GL_DEPTH_TEST);
         glDisable(GL_CULL_FACE);
-//        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        
-        glUseProgram(volumeProgram);
-        glUniform1f(spacingLoc, 1.0f / static_cast<GLfloat>(SLICENUM - 1));
-        glUniformMatrix4fv(mpLoc, 1, GL_FALSE, projection.data());
-        glUniformMatrix4fv(mwLoc, 1, GL_FALSE, modelview.data());
-//        glUniformMatrix4fv(mtLoc, 1, GL_FALSE, tr.data());
-        glUniform4f(volume_light_vecLoc, 3.0f, 4.0f, 5.0f, 0.0f);
-        glUniform1f(thresholdLoc, sliceRenderer.getThreshold());
-        
-        //スライスの図形データを作成
-        const GLuint slice(sliceRenderer.makeSlice());
-        //ボリュームテクスチャを設定
-        
-        glEnable(GL_TEXTURE_3D);
-        glEnable(GL_BLEND);
-        glUniform1f(volumeLoc, 0);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_3D, sliceRenderer.makeVolume(simulator.rhoTexture, smokeColor,tgt));
-        glBindVertexArray(slice);
-        //複製する描画方法．第四引数がインスタンスの数
-        glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, SLICENUM);
-        //カラーバッファを入れ替える
-        
-        glDisable(GL_TEXTURE_3D);
-        glDisable(GL_BLEND);
+        sliceRenderer.rendering(projection, modelview, sliceRot, simulator.rhoTexture);
         window.swapBuffers();
     }
-    std::cout << "Hello, World!\n";
     return 0;
 }

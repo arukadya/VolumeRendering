@@ -87,7 +87,6 @@ void getBackmostSlice(Eigen::Matrix3f &ldVertices,
 
 SliceRenderer::SliceRenderer()
 {
-//    drawableTexture = (char*)malloc(sizeof(char) * TEXDEPTH * TEXWIDTH * TEXHEIGHT * 4);
     threshold = THRESHOLD;
 }
 GLuint SliceRenderer::makeSlice()
@@ -139,8 +138,6 @@ GLuint SliceRenderer::makeVolume(float* rhoTexture, GLfloat *smokeColor,Eigen::V
     
     //GL_RGBA8,GL_RGBA:Each element contains all four components. Each component is clamped to the range [0,1].
     //テクスチャを割り当てる
-//    glTexImage3D(GL_TEXTURE_3D, 0, GL_R8, TEXWIDTH, TEXHEIGHT, TEXDEPTH, 0,
-//                 GL_RED, GL_UNSIGNED_BYTE, &volume[0]);
     glTexImage3D(GL_TEXTURE_3D, 0, GL_R8, TEXWIDTH, TEXHEIGHT, TEXDEPTH, 0,
                  GL_RED, GL_FLOAT, &volume[0]);
     //拡大・補間方法の設定
@@ -154,6 +151,7 @@ GLuint SliceRenderer::makeVolume(float* rhoTexture, GLfloat *smokeColor,Eigen::V
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_BORDER);
     
     static const GLfloat black[] = { 0.0f, 0.0f, 0.0f, 0.0f };
+//    static const GLfloat black[] = { 1.0f, 1.0f, 1.0f, 0.0f };
     glTexParameterfv(GL_TEXTURE_3D, GL_TEXTURE_BORDER_COLOR, black);
     return tex;
 }
@@ -195,6 +193,7 @@ float SliceRenderer::getRaySliceAngleCos(Eigen::Vector3f &tgt)
     return (-viewDirection).dot(sliceDirection) / ( viewDirection.norm() * sliceDirection.norm());
 }
 
+
 GLuint makeSlice()
 {
     GLuint vao;
@@ -218,37 +217,79 @@ float SliceRenderer::getThreshold()
 {
     return threshold;
 }
-//void SliceRenderer::rendering(Matrix4x4 &projection,Matrix4x4 &modelview,float* rhoTexture)
-//{
-//    const GLuint volumeProgram(loadProgram("Shader/volume.vert", "Shader/volume.frag"));
-//    const GLint mtLoc(glGetUniformLocation(volumeProgram, "mt"));
-//    const GLint mwLoc(glGetUniformLocation(volumeProgram, "mw"));
-//    const GLint mpLoc(glGetUniformLocation(volumeProgram, "mp"));
-//    const GLint spacingLoc(glGetUniformLocation(volumeProgram, "spacing"));
-//    const GLint volume_light_vecLoc(glGetUniformLocation(volumeProgram, "light_vec"));
-//    const GLint volumeLoc(glGetUniformLocation(volumeProgram, "volume"));
-//    const GLint thresholdLoc(glGetUniformLocation(volumeProgram, "threshold"));
-//
-//    glUseProgram(volumeProgram);
-//    glUniform1f(spacingLoc, 1.0f / static_cast<GLfloat>(SLICENUM - 1));
-//    glUniformMatrix4fv(mpLoc, 1, GL_FALSE, projection.data());
-//    glUniformMatrix4fv(mwLoc, 1, GL_FALSE, modelview.data());
-////        glUniformMatrix4fv(mtLoc, 1, GL_FALSE, tr.data());
-//    glUniform4f(volume_light_vecLoc, 3.0f, 4.0f, 5.0f, 0.0f);
-//
-//    //スライスの図形データを作成
-//    const GLuint slice(makeSlice());
-//    //ボリュームテクスチャを設定
-//    Eigen::Vector3f tgt = {0.0f,0.0f,0.0f};
-//    GLfloat smokeColor[3] = {0.0f,0.0f,1.0f};
-//    glEnable(GL_TEXTURE_3D);
-//    glEnable(GL_BLEND);
-//    glUniform1f(volumeLoc, 0);
-//    glActiveTexture(GL_TEXTURE0);
-//    glBindTexture(GL_TEXTURE_3D, makeVolume(rhoTexture, smokeColor,tgt));
-//    glBindVertexArray(slice);
-//    //複製する描画方法．第四引数がインスタンスの数
-//    glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, SLICENUM);
-//    glDisable(GL_TEXTURE_3D);
-//    glDisable(GL_BLEND);
-//}
+void SliceRenderer::rendering(Matrix4x4 &projection,Matrix4x4 &modelview,Matrix4x4 &sliceRot,float* rhoTexture)
+{
+    const GLuint volumeProgram(loadVertFragProgram("Shader/volume.vert", "Shader/volume.frag"));
+    const GLint mtLoc(glGetUniformLocation(volumeProgram, "mt"));
+    const GLint mwLoc(glGetUniformLocation(volumeProgram, "mw"));
+    const GLint mpLoc(glGetUniformLocation(volumeProgram, "mp"));
+    const GLint spacingLoc(glGetUniformLocation(volumeProgram, "spacing"));
+    const GLint volume_light_vecLoc(glGetUniformLocation(volumeProgram, "light_vec"));
+    const GLint sliceRot_Loc(glGetUniformLocation(volumeProgram, "sliceRot"));
+    const GLint volumeLoc(glGetUniformLocation(volumeProgram, "volume"));
+    const GLint thresholdLoc(glGetUniformLocation(volumeProgram, "threshold"));
+
+    glUseProgram(volumeProgram);
+    glUniform1f(spacingLoc, 1.0f / static_cast<GLfloat>(SLICENUM - 1));
+    glUniformMatrix4fv(mpLoc, 1, GL_FALSE, projection.data());
+    glUniformMatrix4fv(mwLoc, 1, GL_FALSE, modelview.data());
+    glUniformMatrix4fv(sliceRot_Loc, 1, GL_FALSE, sliceRot.data());
+    glUniform4f(volume_light_vecLoc, 3.0f, 4.0f, 5.0f, 0.0f);
+    Timer timer;
+    timer.startWithMessage("rendering");
+    //スライスの図形データを作成
+    const GLuint slice(makeSlice());
+    //ボリュームテクスチャを設定
+    Eigen::Vector3f tgt = {0.0f,0.0f,0.0f};
+    GLfloat smokeColor[3] = {0.0f,0.0f,1.0f};
+    glEnable(GL_TEXTURE_3D);
+    glEnable(GL_BLEND);
+    glUniform1f(volumeLoc, 0);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_3D, makeVolume(rhoTexture, smokeColor,tgt));
+    glBindVertexArray(slice);
+    //複製する描画方法．第四引数がインスタンスの数
+    
+    glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, SLICENUM);
+    timer.end();
+    glDisable(GL_TEXTURE_3D);
+    glDisable(GL_BLEND);
+}
+
+void SliceRenderer::makeCosTexture()
+{
+    const GLuint program(loadComputeProgram("Shader/cos.comp"));
+    const GLint eye_posLoc(glGetUniformLocation(program, "eye_pos"));
+    const GLint volumeLoc(glGetUniformLocation(program, "volume"));
+    const GLint thresholdLoc(glGetUniformLocation(program, "threshold"));
+
+    glUseProgram(program);
+    glUniform4f(eye_posLoc, 3.0f, 4.0f, 5.0f, 0.0f);
+
+//    GLuint shader_program = createComputeShaderProgram(compute_shader_source);
+
+    // create buffer
+//    GLuint uniform_element_size = glGetUniformLocation(shader_program, "element_size");
+    uint32_t num = TEXDEPTH * TEXHEIGHT * TEXWIDTH;
+    GLuint ssbo;
+    glGenBuffers(1, &ssbo);
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbo);
+    glBufferData(GL_SHADER_STORAGE_BUFFER, num * sizeof(float), nullptr, GL_DYNAMIC_COPY);
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+
+//    glUniform1ui(uniform_element_size, num);
+    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 3, ssbo);
+
+    glDispatchCompute(num / 256 + 1, 1, 1);
+
+    glUseProgram(0);
+
+    std::vector<float> data(num);
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbo);
+    glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, num * sizeof(float), data.data());
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+
+    for (auto v : data) { std::cout << v << '\n'; }
+
+    glDeleteBuffers(1, &ssbo);
+}

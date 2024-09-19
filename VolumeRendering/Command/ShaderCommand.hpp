@@ -7,6 +7,8 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <vector>
+#include <random>
+
 // シェーダオブジェクトのコンパイル結果を表示する
 // shader: シェーダオブジェクト名
 // str: コンパイルエラーが発生した場所を示す文字列
@@ -24,7 +26,7 @@ bool readShaderSource(const char *name, std::vector<GLchar> &buffer);
 // シェーダのソースファイルを読み込んでプログラムオブジェクトを作成する
 // vert: バーテックスシェーダのソースファイル名
 // frag: フラグメントシェーダのソースファイル名
-GLuint loadProgram(const char *vert, const char *frag);
+GLuint loadVertFragProgram(const char *vert, const char *frag);
 GLuint loadComputeProgram(const char *comp);
 #endif
 

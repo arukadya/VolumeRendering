@@ -121,10 +121,10 @@
 		E85DEF1C2C44F3F100B0EF5B /* Command */ = {
 			isa = PBXGroup;
 			children = (
-				E85DEF192C44F3D400B0EF5B /* ShaderCommand.cpp */,
 				E85DEF332C44F6F600B0EF5B /* ComputeCommand.cpp */,
 				E85DEF342C44F6F600B0EF5B /* ComputeCommand.hpp */,
 				E85DEF1A2C44F3D400B0EF5B /* ShaderCommand.hpp */,
+				E85DEF192C44F3D400B0EF5B /* ShaderCommand.cpp */,
 			);
 			path = Command;
 			sourceTree = "<group>";

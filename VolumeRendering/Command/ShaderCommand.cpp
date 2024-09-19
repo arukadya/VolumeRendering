@@ -6,6 +6,8 @@
 //
 
 #include "ShaderCommand.hpp"
+
+
 //テクスチャのバインド，エンコード等の処理を，void encode()にまとめたい．
 
 // シェーダオブジェクトのコンパイル結果を表示する
@@ -139,7 +141,7 @@ bool readShaderSource(const char *name, std::vector<GLchar> &buffer)
 // シェーダのソースファイルを読み込んでプログラムオブジェクトを作成する
 // vert: バーテックスシェーダのソースファイル名
 // frag: フラグメントシェーダのソースファイル名
-GLuint loadProgram(const char *vert, const char *frag)
+GLuint loadVertFragProgram(const char *vert, const char *frag)
 {
     // シェーダのソースファイルを読み込む
     std::vector<GLchar> vsrc;
@@ -196,3 +198,9 @@ void compute()
 
     deleteComputeShaderProgram(shader_program);
 }
+
+struct RGBA {
+    unsigned char r, g, b, a; //赤, 緑, 青, 透過
+    RGBA() = default;
+    constexpr RGBA(const unsigned char r_, const unsigned char g_, const unsigned char b_, const unsigned char a_) :r(r_), g(g_), b(b_), a(a_) {}
+};

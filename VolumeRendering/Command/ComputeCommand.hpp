@@ -8,8 +8,16 @@
 #ifndef ComputeCommand_hpp
 #define ComputeCommand_hpp
 
-#include <stdio.h>
-
-#endif /* ComputeCommand_hpp */
+#include <iostream>
+#include <chrono>
 
 unsigned int resequence3to1(unsigned int i,unsigned int j,unsigned int k,unsigned int Ni,unsigned int Nj,unsigned int Nk);
+
+struct Timer{
+    std::chrono::system_clock::time_point startTime;
+    std::chrono::system_clock::time_point endTime;
+    const char* str;
+    void startWithMessage(const char* s);
+    double end();
+};
+#endif /* ComputeCommand_hpp */
