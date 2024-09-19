@@ -242,6 +242,7 @@ void SliceRenderer::rendering(Matrix4x4 &projection,Matrix4x4 &modelview,Matrix4
     //ボリュームテクスチャを設定
     Eigen::Vector3f tgt = {0.0f,0.0f,0.0f};
     GLfloat smokeColor[3] = {0.0f,0.0f,1.0f};
+    glDisable(GL_CULL_FACE);
     glEnable(GL_TEXTURE_3D);
     glEnable(GL_BLEND);
     glUniform1f(volumeLoc, 0);

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E8139A852C9C00E8009F068C /* FixedObjectRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E8139A832C9C00E8009F068C /* FixedObjectRenderer.cpp */; };
 		E85DEF0A2C44EF8900B0EF5B /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E85DEF092C44EF8900B0EF5B /* main.cpp */; };
 		E85DEF122C44F01800B0EF5B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E85DEF112C44F01800B0EF5B /* Cocoa.framework */; };
 		E85DEF142C44F01E00B0EF5B /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E85DEF132C44F01E00B0EF5B /* CoreVideo.framework */; };
@@ -31,6 +32,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E8139A832C9C00E8009F068C /* FixedObjectRenderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FixedObjectRenderer.cpp; sourceTree = "<group>"; };
+		E8139A842C9C00E8009F068C /* FixedObjectRenderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FixedObjectRenderer.hpp; sourceTree = "<group>"; };
 		E85DEF062C44EF8900B0EF5B /* VolumeRendering */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = VolumeRendering; sourceTree = BUILT_PRODUCTS_DIR; };
 		E85DEF092C44EF8900B0EF5B /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		E85DEF112C44F01800B0EF5B /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -94,12 +97,14 @@
 			isa = PBXGroup;
 			children = (
 				E85DEF092C44EF8900B0EF5B /* main.cpp */,
+				E8139A832C9C00E8009F068C /* FixedObjectRenderer.cpp */,
+				E8139A842C9C00E8009F068C /* FixedObjectRenderer.hpp */,
 				E85DEF202C44F46500B0EF5B /* SliceRenderer.cpp */,
+				E85DEF212C44F46500B0EF5B /* SliceRenderer.hpp */,
 				E85DEF232C44F48300B0EF5B /* Simulator.cpp */,
 				E85DEF242C44F48300B0EF5B /* Simulator.hpp */,
 				E85DEF262C44F49F00B0EF5B /* Window.h */,
 				E85DEF272C44F4B100B0EF5B /* Matrix4x4.h */,
-				E85DEF212C44F46500B0EF5B /* SliceRenderer.hpp */,
 				E85DEF2F2C44F63600B0EF5B /* Shader */,
 				E85DEF292C44F5AD00B0EF5B /* Shape */,
 				E85DEF1C2C44F3F100B0EF5B /* Command */,
@@ -213,6 +218,7 @@
 				E85DEF222C44F46500B0EF5B /* SliceRenderer.cpp in Sources */,
 				E85DEF352C44F6F600B0EF5B /* ComputeCommand.cpp in Sources */,
 				E85DEF252C44F48300B0EF5B /* Simulator.cpp in Sources */,
+				E8139A852C9C00E8009F068C /* FixedObjectRenderer.cpp in Sources */,
 				E85DEF0A2C44EF8900B0EF5B /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
