@@ -1,3 +1,5 @@
+#define STBI_MSC_SECURE_CRT
+#define STB_IMAGE_WRITE_IMPLEMENTATION
 #include <cstdlib>
 #include <iostream>
 #include <vector>
@@ -15,14 +17,14 @@
 #include "FixedObjectRenderer.hpp"
 #include "SliceRenderer.hpp"
 #include "Eigen/Dense"
-
-#include  <opencv2/opencv.hpp>
+#include "ShaderDebugger.hpp"
 
 int main(int argc, char * argv[])
 {
     Simulator simulator;
     FixedObjectRenderer fixedObjectRenderer;
     SliceRenderer sliceRenderer;
+    
 //    Mesh bunny = simulator.mesh;
 //    bunny.input("bun_zipper_f10000.obj");
 //    bunny.input("bun_zipper.obj");
@@ -59,7 +61,8 @@ int main(int argc, char * argv[])
     float sum = 0;
     while(window)
     {
-        
+        std::string str = "rhoTexture";
+        if(id % 500 == 100)buffer_write_png(TEXWIDTH,TEXHEIGHT,TEXDEPTH,4,simulator.rhoTexture,str);
         std::string inputFileName = "resources/density_txt/output";
         inputFileName += std::to_string(id % 500)+".txt";
         ++id;
@@ -103,7 +106,9 @@ int main(int argc, char * argv[])
         sliceRenderer.setSliceDirection(tgt);
         fixedObjectRenderer.rendering(projection, modelview);
         sliceRenderer.rendering(projection, modelview, sliceRot, simulator.rhoTexture);
+        
         window.swapBuffers();
     }
+    
     return 0;
 }

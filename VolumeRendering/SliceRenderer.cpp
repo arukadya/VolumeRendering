@@ -228,7 +228,7 @@ void SliceRenderer::rendering(Matrix4x4 &projection,Matrix4x4 &modelview,Matrix4
     glUniformMatrix4fv(sliceRot_Loc, 1, GL_FALSE, sliceRot.data());
     glUniform4f(volume_light_vecLoc, 3.0f, 4.0f, 5.0f, 0.0f);
     Timer timer;
-    timer.startWithMessage("rendering");
+//    timer.startWithMessage("rendering");
     //スライスの図形データを作成
     const GLuint slice(makeSlice());
     //ボリュームテクスチャを設定
@@ -244,7 +244,7 @@ void SliceRenderer::rendering(Matrix4x4 &projection,Matrix4x4 &modelview,Matrix4
     //複製する描画方法．第四引数がインスタンスの数
     
     glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, SLICENUM);
-    timer.end();
+//    timer.end();
     glDisable(GL_TEXTURE_3D);
     glDisable(GL_BLEND);
 }

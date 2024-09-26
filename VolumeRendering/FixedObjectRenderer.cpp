@@ -8,8 +8,6 @@
 #include "FixedObjectRenderer.hpp"
 FixedObjectRenderer::FixedObjectRenderer()
 {
-    
-    
 }
 void FixedObjectRenderer::rendering(Matrix4x4 &projection,Matrix4x4 &modelview)
 {
